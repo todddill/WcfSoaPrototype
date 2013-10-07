@@ -1,32 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Core.BaseClasses
 {
     public abstract class CommunicatorConfigurationBase
     {
-        private List<string> requestParameterNames = new List<string>();
-
-        public string Path { get; set; }
         public string Endpoint { get; set; }
+        public List<string> RequestParameters { get; set; }
 
-        public abstract NameValueCollection Read();
-        public abstract void Write(NameValueCollection collection);
+        public abstract void Read();
+        public abstract void Write(string path);
 
-        public void AddRequestParameter(string name)
-        {
-            requestParameterNames.Add(name);
-        }
-
-        public List<string> GetListOfRequestParameters()
-        {
-            return requestParameterNames;
-        }
-        
     }
 }

@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Core.BaseClasses;
 
 namespace HcpcsCodesTests.MockObjects
 {
     public class MockCommunicatorConfiguration : CommunicatorConfigurationBase
     {
-        public string RequestParameter1 { get; set; }
-
         public MockCommunicatorConfiguration(string endpoint)
         {
             this.Endpoint = endpoint;
         }
 
-        public override System.Collections.Specialized.NameValueCollection Read()
+        public override void Read()
         {
-            throw new NotImplementedException();
+            this.RequestParameters = new List<string>();
+            this.RequestParameters.Add("description");
         }
 
-        public override void Write(System.Collections.Specialized.NameValueCollection collection)
+        public override void Write(string path)
         {
             throw new NotImplementedException();
         }

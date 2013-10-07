@@ -5,7 +5,7 @@ using HcpcsCodes;
 using HcpcsCodesTests.MockObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HcpcsCodesTests
+namespace UnitTests.HcpcsCodesTests
 {
     [TestClass]
     public class HcpcsCodesCommunicatorTests
@@ -19,11 +19,10 @@ namespace HcpcsCodesTests
             ICommunicator communicator = new Communicator(transaction);
 
             MockCommunicatorConfiguration configuration = new MockCommunicatorConfiguration(PATH);
-            configuration.AddRequestParameter("Name");
 
             communicator.Send(configuration);
 
-            Assert.IsTrue(transaction.Request.ContainsKey("Name"));
+            Assert.IsTrue(transaction.Request.ContainsKey("description"));
         }
     }
 }

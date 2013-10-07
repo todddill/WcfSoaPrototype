@@ -21,7 +21,8 @@ namespace HcpcsCodes
 
         public TransactionBase Send(CommunicatorConfigurationBase configuration)
         {
-            GetRequestFormat(configuration.GetListOfRequestParameters());
+            configuration.Read();
+            GetRequestFormat(configuration.RequestParameters);
             return _transaction;
         }
 

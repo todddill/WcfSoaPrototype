@@ -14,5 +14,13 @@ namespace HcpcsCodes
         {
 
         }
+
+        public void CreateRequestParameters(List<string> requestParameters)
+        {
+            foreach (string parameter in requestParameters)
+            {
+                this.Request.Add(parameter, string.Empty);
+            }
+        }
     }
 }

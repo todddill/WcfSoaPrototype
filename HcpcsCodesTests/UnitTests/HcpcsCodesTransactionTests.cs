@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Xml.Linq;
 using Core.BaseClasses;
 using HcpcsCodes;
+using HcpcsCodesTests.SetUpData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HcpcsCodesTests
+namespace UnitTests.HcpcsCodesTests
 {
     [TestClass]
     public class HcpcsCodesTransactionTests
@@ -15,25 +17,21 @@ namespace HcpcsCodesTests
         public void Transacton_AddParamteter_ParameterIsInTheList()
         {
             Transaction transaction = new Transaction();
-            transaction.AddRequestParameter("Name", "Value");
+            transaction.Request.Add("Name", "Value");
             Assert.IsTrue(transaction.Request["Name"].Equals("Value"));
         }
 
         [TestMethod]
         public void Transaction_PopulateRequestParams_CheckTheyExist()
         {
-            NameValueCollection collection = new NameValueCollection();
-            collection.Add("Description", "");
-
-            CommunicatorConfiguration config = new CommunicatorConfiguration(PATH);
-            config.Write(collection);
-
             Transaction transaction = new Transaction();
-            //transaction.AddRequestParameters(config.Read());
+            CommunicatorConfiguration config = new CommunicatorConfiguration(string.Empty);
+            config.XmlConfiguration = ConfigurationData.GetHcpcsConfigurationData();
+            config.Read();
 
-            transaction.AddRequestParameter("Description", "Clinical psychologist");
+            transaction.CreateRequestParameters(config.RequestParameters);
 
-            config.ClearConfiguration();
+            transaction.Request.Add("Description", "Clinical psychologist");
             Assert.IsTrue(transaction.Request["Description"].Equals("Clinical psychologist"));
         }
     }

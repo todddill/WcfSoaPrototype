@@ -242,7 +242,9 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="ViewSwitcher.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Bundle.config" />
     <Content Include="Site.Mobile.Master" />
     <None Include="Service References\ServiceReference1\Service1.wsdl" />

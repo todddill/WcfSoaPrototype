@@ -6,51 +6,49 @@ using System.Threading.Tasks;
 using System.IO;
 using Core.BaseClasses;
 using System.Collections.Specialized;
+using System.Xml.Linq;
 
 namespace HcpcsCodes
 {
     public class CommunicatorConfiguration : CommunicatorConfigurationBase
     {
-        public bool FileExists
-        { 
-            get
-            {
-                return File.Exists(this.Path);
-            }
-        }
+        public XDocument XmlConfiguration { get; set; }
 
         public CommunicatorConfiguration(string path)
         {
-            this.Path = path;
-        }
-
-        public override NameValueCollection Read()
-        {
-            NameValueCollection collection = new NameValueCollection();
-            string data = File.ReadAllText(this.Path);
-            foreach (string pair in data.Split(';'))
+            if(!string.IsNullOrEmpty(path))
             {
-                string[] splitPair = pair.Split('=');
-                collection.Add(splitPair[0], (splitPair[0].Length > 0) ? splitPair[1] : string.Empty);
+                string data = File.ReadAllText(path);
+                XmlConfiguration = XDocument.Load(path);
             }
-
-            return collection;
         }
 
-        public override void Write(NameValueCollection collection)
+        public override void Read()
         {
-            string write = string.Empty;
-            foreach(string key in collection.Keys)
-           {
-                write += key + "=" + collection[key] + ";";
-            }
-
-            File.WriteAllText(this.Path, write);
+            RequestParameters = ReadRequestParameters();
         }
 
-        public void ClearConfiguration()
+        private List<string> ReadRequestParameters()
         {
-            File.Delete(this.Path);
+            List<string> returnValues = new List<string>();
+            var data = (from e in XmlConfiguration.Descendants("parameter")
+                        where e.Parent.Parent.Name == ("request")
+                        select e.Value).ToArray();
+
+            foreach (var p in data)
+                returnValues.Add(p.ToString());
+
+            return returnValues;
+        }
+
+        public override void Write(string path)
+        {
+            XmlConfiguration.Save(path);
+        }
+
+        public void ClearConfiguration(string path)
+        {
+            File.Delete(path);
         }
     }
 }

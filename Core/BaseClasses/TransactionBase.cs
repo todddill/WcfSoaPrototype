@@ -24,25 +24,25 @@ namespace Core.BaseClasses
             this.Response = new Hashtable();
         }
 
-        public void AddRequestParameter(string key, string value)
-        {
-            if(this.Request.ContainsKey(key))
-                this.Request[key] = value;
-        }
+        //public void AddRequestParameter(string key, string value)
+        //{
+        //    if(this.Request.ContainsKey(key))
+        //        this.Request[key] = value;
+        //}
 
-        public void AddRequestParameters(Hashtable collection)
-        {
-            this.Request = collection;
-        }
+        //public void AddRequestParameters(Hashtable collection)
+        //{
+        //    this.Request = collection;
+        //}
 
-        public void AddResponseParameter(string key, string value)
-        {
-            this.Response[key] = value;
-        }
+        //public void AddResponseParameter(string key, string value)
+        //{
+        //    this.Response[key] = value;
+        //}
 
-        public void AddResponseParameters(Hashtable collection)
-        {
-            this.Response = collection;
-        }
+        //public void AddResponseParameters(Hashtable collection)
+        //{
+        //    this.Response = collection;
+        //}
     }
 }

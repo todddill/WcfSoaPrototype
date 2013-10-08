@@ -10,33 +10,20 @@ namespace HcpcsCodesTests.IntegrationTests
     public class CommunicatorConfigurationIntegrationTests
     {
         const string PATH = "configurationData.xml";
+        const string XPATH = "/hcpcscodesconfiguration/request/parameters";
 
         [TestMethod]
-        public void Read_XmlConfiguratonFromFileSystem_FirstValueIsDescription()
+        public void Transaction_LoadTransactionConfigurationFromXmlFile_ContainsValueDescription()
         {
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            CommunicatorConfiguration configuration = new CommunicatorConfiguration(PATH);
-            configuration.Read();
-            List<string> requestParameters = configuration.RequestParameters;
+            Transaction transaction = new Transaction();
+            TransactionData transactionData = new TransactionData(PATH);
+            transactionData.XpathToRequestParameters = XPATH + "/description";
+            transaction.LoadTransactionConfiguration(transactionData);
 
-            Assert.IsTrue(requestParameters[0].Contains("description"));
-
-            SetUpData.ConfigurationData.ClearConfigurationData(PATH);
-        }
-
-        [TestMethod]
-        public void Read_XmlConfiguratonFromFileSystem_SecondValueIsIdentifier()
-        {
-            XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
-            SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
-
-            CommunicatorConfiguration configuration = new CommunicatorConfiguration(PATH);
-            configuration.Read();
-            List<string> requestParameters = configuration.RequestParameters;
-
-            Assert.IsTrue(requestParameters[1].Contains("identifier"));
+            Assert.IsTrue(transaction.RequestParameters.ContainsKey("description"));
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
         }

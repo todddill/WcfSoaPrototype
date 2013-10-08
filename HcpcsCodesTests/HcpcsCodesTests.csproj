@@ -53,17 +53,17 @@
   </Choose>
   <ItemGroup>
     <Compile Include="IntegrationTests\CommunicatorConfigurationIntegrationTests.cs" />
-    <Compile Include="MockObjects\MockCommunicatorConfiguration.cs" />
+    <Compile Include="MockObjects\MockTransactionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTests\HcpcsCodesCommunicatorConfigurationTests.cs" />
     <Compile Include="UnitTests\HcpcsCodesCommunicatorTests.cs" />
     <Compile Include="UnitTests\HcpcsCodesTransactionTests.cs" />
     <Compile Include="SetUpData\ConfigurationData.cs" />
+    <Compile Include="UnitTests\HcpcsCodesTransactionDataTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj">
+    <ProjectReference Include="..\Core\SoaHubCore.csproj">
       <Project>{4529fde5-4027-411c-b7c2-e0cafd213ee4}</Project>
-      <Name>Core</Name>
+      <Name>SoaHubCore</Name>
     </ProjectReference>
     <ProjectReference Include="..\HcpcsCodes\HcpcsCodes.csproj">
       <Project>{acf56765-4f7a-4416-a5b4-d07ec144b083}</Project>

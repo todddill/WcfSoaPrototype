@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.BaseClasses;
+﻿using SoaHubCore.BaseClasses;
 
-namespace Core.Interfaces
+namespace SoaHubCore.Interfaces
 {
     public interface ICommunicator
     {
-        TransactionBase Send(CommunicatorConfigurationBase configuration);
+        TransactionBase Send();
     }
 }

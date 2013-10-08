@@ -17,8 +17,7 @@ namespace HcpcsCodesTests.SetUpData
                 new XElement("hcpcscodesconfiguration",
                     new XElement("request",
                         new XElement("parameters",
-                            new XElement("parameter", "description"),
-                            new XElement("parameter", "identifier")))));
+                            new XElement("description", "Clinical psychologist")))));
             return doc;
         }
 

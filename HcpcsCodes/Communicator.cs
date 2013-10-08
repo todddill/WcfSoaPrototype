@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Interfaces;
-using Core.BaseClasses;
+﻿using System.Collections.Generic;
+using SoaHubCore.BaseClasses;
+using SoaHubCore.Interfaces;
 
 namespace HcpcsCodes
 {
@@ -15,25 +11,21 @@ namespace HcpcsCodes
         public Communicator(TransactionBase transaction)
         {
             _transaction = transaction;
+            BuildRequestMessage();
+        }
+
+        private static string BuildRequestMessage()
+        {
+            return string.Empty;
         }
 
         #region ICommunicator Members
 
-        public TransactionBase Send(CommunicatorConfigurationBase configuration)
+        public TransactionBase Send()
         {
-            configuration.Read();
-            GetRequestFormat(configuration.RequestParameters);
             return _transaction;
         }
 
         #endregion
-
-        private void GetRequestFormat(List<string> requestParameters)
-        { 
-            foreach(string parameter in requestParameters)
-            {
-                _transaction.Request.Add(parameter, string.Empty);
-            }
-        }
     }
 }

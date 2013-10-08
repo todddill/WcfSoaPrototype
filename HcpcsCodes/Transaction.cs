@@ -1,26 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.BaseClasses;
+﻿using System.Collections.Generic;
+using SoaHubCore.BaseClasses;
 
 namespace HcpcsCodes
 {
     public class Transaction : TransactionBase
     {
+        private Dictionary<string, string> _requestParameters = new Dictionary<string, string>();
+        private Dictionary<string, string> _responseParameters = new Dictionary<string, string>();
+        private TransactionDataBase _transactionData;
+
         public Transaction()
         {
-
+            
         }
 
-        public void CreateRequestParameters(List<string> requestParameters)
+        public override Dictionary<string, string> RequestParameters
         {
-            foreach (string parameter in requestParameters)
-            {
-                this.Request.Add(parameter, string.Empty);
-            }
+            get { return _requestParameters; }
+        }
+
+        public override Dictionary<string, string> ResponseParameters
+        {
+            get { return _responseParameters; }
+        }
+
+        private void LoadRequestParameters()
+        {
+            _requestParameters = _transactionData.RequestParameters;
+        }
+
+        public override void LoadTransactionConfiguration(TransactionDataBase transactionData)
+        {
+            _transactionData = transactionData;
+            LoadRequestParameters();
         }
     }
 }

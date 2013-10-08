@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HcpcsCodes.Communicator" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAEBAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Communicator.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_transaction" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HcpcsCodes.Transaction">
+    <Position X="7.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQEAQARAAAAAAAAAAAAAAAAAAAAAAAAgAQA=</HashCode>
+      <FileName>Transaction.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_transactionData" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="HcpcsCodes.TransactionData">
+    <Position X="3.25" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAgAAQAAAAAAABAAAAAAAAAAAAABAEAAAA=</HashCode>
+      <FileName>TransactionData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoaHubCore.BaseClasses.TransactionBase">
+    <Position X="7.75" Y="4" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="SoaHubCore.BaseClasses.TransactionDataBase">
+    <Position X="3.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

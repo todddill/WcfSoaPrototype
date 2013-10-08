@@ -1,48 +1,23 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Core.BaseClasses
+namespace SoaHubCore.BaseClasses
 {
+    public enum Status { Complete, Request, Failed };
+
     public abstract class TransactionBase
     {
-        public enum Status { Complete, Request, Failed };
+        public Status TransactionStatus { get; set; }
 
-        public Status TransactionStatus;
+        public abstract Dictionary<string, string> RequestParameters { get; }
 
-        public Hashtable Request { get; private set; }
+        public abstract Dictionary<string, string> ResponseParameters { get; }
 
-        public Hashtable Response { get; private set; }
+        public string DestinationEndpoint { get; set; }
 
-        public TransactionBase()
-        {
-            this.Request = new Hashtable();
-            this.Response = new Hashtable();
-        }
+        public string DestinationMethod { get; set; }
 
-        //public void AddRequestParameter(string key, string value)
-        //{
-        //    if(this.Request.ContainsKey(key))
-        //        this.Request[key] = value;
-        //}
+        public abstract void LoadTransactionConfiguration(TransactionDataBase transactionData);
 
-        //public void AddRequestParameters(Hashtable collection)
-        //{
-        //    this.Request = collection;
-        //}
-
-        //public void AddResponseParameter(string key, string value)
-        //{
-        //    this.Response[key] = value;
-        //}
-
-        //public void AddResponseParameters(Hashtable collection)
-        //{
-        //    this.Response = collection;
-        //}
     }
 }

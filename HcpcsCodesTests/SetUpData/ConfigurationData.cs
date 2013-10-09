@@ -17,7 +17,12 @@ namespace HcpcsCodesTests.SetUpData
                 new XElement("hcpcscodesconfiguration",
                     new XElement("request",
                         new XElement("parameters",
-                            new XElement("description", "Clinical psychologist")))));
+                            new XElement("description", "Clinical psychologist")),
+                        new XElement("endpoint", "http://www.restfulwebservices.net/wcf/HCPCSService.svc"),
+                        new XElement("method", "GetDetailsByDescription")),
+                    new XElement("response",
+                        new XElement("parameters",
+                            new XElement("object", "HCPCS")))));
             return doc;
         }
 

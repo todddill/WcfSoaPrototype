@@ -13,9 +13,9 @@ namespace SoaHubCore.BaseClasses
 
         public abstract Dictionary<string, string> ResponseParameters { get; }
 
-        public string DestinationEndpoint { get; set; }
+        public abstract string DestinationEndpoint { get; }
 
-        public string DestinationMethod { get; set; }
+        public abstract string DestinationMethod { get; }
 
         public abstract void LoadTransactionConfiguration(TransactionDataBase transactionData);
 

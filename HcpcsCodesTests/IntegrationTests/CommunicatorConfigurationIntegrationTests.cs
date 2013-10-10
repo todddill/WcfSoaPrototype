@@ -18,12 +18,11 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            Transaction transaction = new Transaction();
             TransactionData transactionData = new TransactionData(PATH);
             transactionData.XpathToRequestParameters = XPATH + "/request/parameters/description";
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.RequestParameters.ContainsKey("description"));
+            Assert.IsTrue(transaction.ResponseObject.RequestParameters.ContainsKey("description"));
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
         }
@@ -34,12 +33,11 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            Transaction transaction = new Transaction();
             TransactionData transactionData = new TransactionData(PATH);
             transactionData.XpathToResponseParameters = XPATH + "/response/parameters/object";
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.ResponseParameters.ContainsKey("object"));
+            Assert.IsTrue(transaction.ResponseObject.ResponseParameters.ContainsKey("object"));
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
         }
@@ -50,12 +48,11 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            Transaction transaction = new Transaction();
             TransactionData transactionData = new TransactionData(PATH);
             transactionData.XpathToRequestParameters = string.Empty;
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.RequestParameters.Count == 0);
+            Assert.IsTrue(transaction.ResponseObject.RequestParameters.Count == 0);
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
         }
@@ -66,12 +63,11 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            Transaction transaction = new Transaction();
             TransactionData transactionData = new TransactionData(PATH);
-            transactionData.XpathToEndpoint =  XPATH + "/request/endpoint";
-            transaction.LoadTransactionConfiguration(transactionData);
+            transactionData.XpathToEndpoint = XPATH + "/request/endpoint";
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
+            Assert.IsTrue(transaction.ResponseObject.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
         }
@@ -82,12 +78,11 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            Transaction transaction = new Transaction();
             TransactionData transactionData = new TransactionData(PATH);
             transactionData.XpathToMethod = XPATH + "/request/method";
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.DestinationMethod.Equals("GetDetailsByDescription"));
+            Assert.IsTrue(transaction.ResponseObject.DestinationMethod.Equals("GetDetailsByDescription"));
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
         }

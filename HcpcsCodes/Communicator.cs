@@ -7,24 +7,24 @@ using SoaHubCore.Interfaces;
 
 namespace HcpcsCodes
 {
-    public class Communicator : ICommunicator
+    public class Communicator : ICommunicator<HcpcsCodesMessage>
     {
-        private TransactionBase _transaction;
+        private TransactionBase<HcpcsCodesMessage> _transaction;
         const string SOAPENVELOP = "xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns=\"http://www.restfulwebservices.net/ServiceContracts/2008/01\"";
 
-        public Communicator(TransactionBase transaction)
+        public Communicator(TransactionBase<HcpcsCodesMessage> transaction)
         {
             _transaction = transaction;
         }
 
         #region ICommunicator Members
 
-        public TransactionBase Send()
+        public TransactionBase<HcpcsCodesMessage> Send()
         {
-            string message = BuildSoapMessage(_transaction.DestinationMethod, _transaction.RequestParameters).ToString();
-            HttpWebRequest request = BuildHttpRequest(_transaction.DestinationMethod, _transaction.DestinationEndpoint);
+            string message = BuildSoapMessage(_transaction.ResponseObject.DestinationMethod, _transaction.ResponseObject.RequestParameters).ToString();
+            HttpWebRequest request = BuildHttpRequest(_transaction.ResponseObject.DestinationMethod, _transaction.ResponseObject.DestinationEndpoint);
             string response = WebServiceCall(request, message);
-            _transaction.ResponseParameters["object"] = response;
+            _transaction.ResponseObject.ResponseParameters["object"] = response;
             return _transaction;
         }
 

@@ -2,8 +2,8 @@
 
 namespace SoaHubCore.Interfaces
 {
-    public interface ICommunicator
+    public interface ICommunicator<T>
     {
-        TransactionBase Send();
+        TransactionBase<T> Send();
     }
 }

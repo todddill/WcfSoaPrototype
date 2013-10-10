@@ -19,18 +19,18 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            Transaction request = new Transaction();
             TransactionData transactionData = new TransactionData(PATH);
             transactionData.XpathToRequestParameters = XPATH + "/request/parameters/description";
             transactionData.XpathToResponseParameters = XPATH + "/response/parameters/object";
             transactionData.XpathToEndpoint = XPATH + "/request/endpoint";
             transactionData.XpathToMethod = XPATH + "/request/method";
-            request.LoadTransactionConfiguration(transactionData);
-            ICommunicator communicator = new Communicator(request);
+            Transaction request = new Transaction(transactionData);
 
-            TransactionBase response = communicator.Send();
+            ICommunicator<HcpcsCodesMessage> communicator = new Communicator(request);
 
-            Assert.IsTrue(response.ResponseParameters["object"].Contains("HCPCS"));
+            TransactionBase<HcpcsCodesMessage> response = communicator.Send();
+
+            Assert.IsTrue(response.ResponseObject.ResponseParameters["object"].Contains("HCPCS"));
         }
     }
 }

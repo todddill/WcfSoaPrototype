@@ -12,49 +12,41 @@ namespace UnitTests.HcpcsCodesTests
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_RequestHasDescriptionValue()
         {
-            Transaction transaction = new Transaction();
             MockedValues mockedValues = SetupMockedTransactionValues();
-
             TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.RequestParameters["description"].Equals("Clinical psychologist"));
+            Assert.IsTrue(transaction.ResponseObject.RequestParameters["description"].Equals("Clinical psychologist"));
         }
 
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_ResponseHasObjectValue()
         {
-            Transaction transaction = new Transaction();
             MockedValues mockedValues = SetupMockedTransactionValues();
-
             TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.ResponseParameters["object"].Equals("HCPCS"));
+            Assert.IsTrue(transaction.ResponseObject.ResponseParameters["object"].Equals("HCPCS"));
         }
 
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_HasEndpointValue()
         {
-            Transaction transaction = new Transaction();
             MockedValues mockedValues = SetupMockedTransactionValues();
-
             TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
+            Assert.IsTrue(transaction.ResponseObject.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
         }
 
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_HasMethodValue()
         {
-            Transaction transaction = new Transaction();
             MockedValues mockedValues = SetupMockedTransactionValues();
-
             TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            transaction.LoadTransactionConfiguration(transactionData);
+            Transaction transaction = new Transaction(transactionData);
 
-            Assert.IsTrue(transaction.DestinationMethod.Equals("GetDetailsByDescription"));
+            Assert.IsTrue(transaction.ResponseObject.DestinationMethod.Equals("GetDetailsByDescription"));
         }
 
         private static MockedValues SetupMockedTransactionValues()

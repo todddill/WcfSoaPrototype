@@ -3,41 +3,40 @@ using SoaHubCore.BaseClasses;
 
 namespace HcpcsCodes
 {
-    public class Transaction : TransactionBase
+    public class HcpcsCodesMessage
     {
-        private Dictionary<string, string> _requestParameters = new Dictionary<string, string>();
-        private Dictionary<string, string> _responseParameters = new Dictionary<string, string>();
-        private string _endpoint = string.Empty;
-        private string _method = string.Empty;
+        public Dictionary<string, string> RequestParameters { get; set; }
+
+        public Dictionary<string, string> ResponseParameters { get; set; }
+
+        public string DestinationEndpoint { get; set; }
+
+        public string DestinationMethod { get; set; }
+    }
+
+    public class Transaction : TransactionBase<HcpcsCodesMessage>
+    {
 
         private TransactionDataBase _transactionData;
 
-        public Transaction()
-        {
-            
-        }
+        private HcpcsCodesMessage _hcpcsCodesMessage = new HcpcsCodesMessage();
 
-        public override Dictionary<string, string> RequestParameters
+        public Transaction(TransactionDataBase transactionData)
         {
-            get { return _requestParameters; }
-        }
-
-        public override Dictionary<string, string> ResponseParameters
-        {
-            get { return _responseParameters; }
+            LoadTransactionConfiguration(transactionData);
         }
 
         private void LoadRequestParameters()
         {
-            _requestParameters = _transactionData.RequestParameters;
+            _hcpcsCodesMessage.RequestParameters = _transactionData.RequestParameters;
         }
 
         private void LoadResponseParameters()
         {
-            _responseParameters = _transactionData.ResponseParameters;
+            _hcpcsCodesMessage.ResponseParameters = _transactionData.ResponseParameters;
         }
 
-        public override void LoadTransactionConfiguration(TransactionDataBase transactionData)
+        private void LoadTransactionConfiguration(TransactionDataBase transactionData)
         {
             _transactionData = transactionData;
             LoadRequestParameters();
@@ -47,24 +46,13 @@ namespace HcpcsCodes
 
         private void LoadConnectionData()
         {
-            _endpoint = _transactionData.DestinationEndpoint;
-            _method = _transactionData.DestinationMethod;
+            _hcpcsCodesMessage.DestinationEndpoint = _transactionData.DestinationEndpoint;
+            _hcpcsCodesMessage.DestinationMethod = _transactionData.DestinationMethod;
         }
 
-        public override string DestinationEndpoint
+        public override HcpcsCodesMessage ResponseObject
         {
-            get
-            {
-                return _endpoint;
-            }
-        }
-
-        public override string DestinationMethod
-        {
-            get
-            {
-                return _method;
-            }
+            get { return _hcpcsCodesMessage; }
         }
     }
 }

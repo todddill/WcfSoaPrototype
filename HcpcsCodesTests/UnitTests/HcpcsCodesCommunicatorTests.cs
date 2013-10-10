@@ -14,52 +14,41 @@ namespace UnitTests.HcpcsCodesTests
         [TestMethod]
         public void Communicator_Send_TransactionHasRequestParameter_Description()
         {
-            TransactionBase transaction = new Transaction();
-
             MockedValues mockedValues = SetupMockedTransactionValues();
-
             TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-
-            transaction.LoadTransactionConfiguration(transactionData);
-            ICommunicator communicator = new Communicator(transaction);
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(transactionData);
+            ICommunicator<HcpcsCodesMessage> communicator = new Communicator(transaction);
 
             communicator.Send();
 
-            Assert.IsTrue(transaction.RequestParameters.ContainsKey("description"));
+            Assert.IsTrue(transaction.ResponseObject.RequestParameters.ContainsKey("description"));
         }
 
         [TestMethod]
         public void Communicator_Send_TransactionHasResponseParameter_Object()
         {
-            TransactionBase transaction = new Transaction();
-
             MockedValues mockedValues = SetupMockedTransactionValues();
-
             TransactionDataBase transactionData = new MockTransactionData(mockedValues);
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(transactionData);
 
-            transaction.LoadTransactionConfiguration(transactionData);
-            ICommunicator communicator = new Communicator(transaction);
+            ICommunicator<HcpcsCodesMessage> communicator = new Communicator(transaction);
 
             communicator.Send();
 
-            Assert.IsTrue(transaction.ResponseParameters.ContainsKey("object"));
+            Assert.IsTrue(transaction.ResponseObject.ResponseParameters.ContainsKey("object"));
         }
 
         [TestMethod]
         public void Communicator_Send_TransactionHasEndpoint_Name()
         {
-            TransactionBase transaction = new Transaction();
-
             MockedValues mockedValues = SetupMockedTransactionValues();
-
             TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-
-            transaction.LoadTransactionConfiguration(transactionData);
-            ICommunicator communicator = new Communicator(transaction);
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(transactionData);
+            ICommunicator<HcpcsCodesMessage> communicator = new Communicator(transaction);
 
             communicator.Send();
 
-            Assert.IsTrue(transaction.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
+            Assert.IsTrue(transaction.ResponseObject.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
         }
 
         private static MockedValues SetupMockedTransactionValues()

@@ -10,7 +10,7 @@ namespace HcpcsCodes
     public class Communicator : ICommunicator<HcpcsCodesMessage>
     {
         private TransactionBase<HcpcsCodesMessage> _transaction;
-        const string SOAPENVELOP = "xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns=\"http://www.restfulwebservices.net/ServiceContracts/2008/01\"";
+        const string SOAPENVELOP = "http://www.restfulwebservices.net/ServiceContracts/2008/01";
 
         public Communicator(TransactionBase<HcpcsCodesMessage> transaction)
         {
@@ -58,7 +58,7 @@ namespace HcpcsCodes
         private static StringBuilder BuildSoapMessage(string methodName, Dictionary<string, string> methodParameters)
         {
             StringBuilder soapRequest = new StringBuilder();
-            soapRequest.Append("<soapenv:Envelope " + SOAPENVELOP + ">");
+            soapRequest.Append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns=\"" + SOAPENVELOP + "\">");
             soapRequest.Append("<soapenv:Header/>");
             soapRequest.Append("<soapenv:Body>");
             soapRequest.Append("<ns:" + methodName + ">");

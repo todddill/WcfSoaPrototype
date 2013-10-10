@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using HcpcsCodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SoaHubCore.BaseClasses;
 
 namespace HcpcsCodesTests.IntegrationTests
 {
@@ -18,9 +19,9 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            TransactionData transactionData = new TransactionData(PATH);
-            transactionData.XpathToRequestParameters = XPATH + "/request/parameters/description";
-            Transaction transaction = new Transaction(transactionData);
+            XDocument xmlData = XDocument.Load(PATH);
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(xmlData, xpathDefinitions);
 
             Assert.IsTrue(transaction.ResponseObject.RequestParameters.ContainsKey("description"));
 
@@ -33,9 +34,9 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            TransactionData transactionData = new TransactionData(PATH);
-            transactionData.XpathToResponseParameters = XPATH + "/response/parameters/object";
-            Transaction transaction = new Transaction(transactionData);
+            XDocument xmlData = XDocument.Load(PATH);
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(xmlData, xpathDefinitions);
 
             Assert.IsTrue(transaction.ResponseObject.ResponseParameters.ContainsKey("object"));
 
@@ -43,16 +44,13 @@ namespace HcpcsCodesTests.IntegrationTests
         }
 
         [TestMethod]
-        public void Transaction_LoadTransactionConfigurationFromXmlFile_NoPathEqualsNoParameters()
+        public void Transaction_LoadTransactionConfigurationFromXmlFile_NullDocumentEqualsNoParameters()
         {
-            XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
-            SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
+            XDocument xmlData = null;
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(xmlData, xpathDefinitions);
 
-            TransactionData transactionData = new TransactionData(PATH);
-            transactionData.XpathToRequestParameters = string.Empty;
-            Transaction transaction = new Transaction(transactionData);
-
-            Assert.IsTrue(transaction.ResponseObject.RequestParameters.Count == 0);
+            Assert.IsTrue(transaction.ResponseObject.RequestParameters == null);
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
         }
@@ -63,9 +61,9 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            TransactionData transactionData = new TransactionData(PATH);
-            transactionData.XpathToEndpoint = XPATH + "/request/endpoint";
-            Transaction transaction = new Transaction(transactionData);
+            XDocument xmlData = XDocument.Load(PATH);
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(xmlData, xpathDefinitions);
 
             Assert.IsTrue(transaction.ResponseObject.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
 
@@ -78,13 +76,24 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            TransactionData transactionData = new TransactionData(PATH);
-            transactionData.XpathToMethod = XPATH + "/request/method";
-            Transaction transaction = new Transaction(transactionData);
+            XDocument xmlData = XDocument.Load(PATH);
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(xmlData, xpathDefinitions);
 
             Assert.IsTrue(transaction.ResponseObject.DestinationMethod.Equals("GetDetailsByDescription"));
 
             SetUpData.ConfigurationData.ClearConfigurationData(PATH);
+        }
+
+        private static XPathDefinitions SetUpXPath()
+        {
+            XPathDefinitions xpathDefinitions = new XPathDefinitions();
+            xpathDefinitions.XpathToRequestParameters = XPATH + "/request/parameters/description";
+            xpathDefinitions.XpathToResponseParameters = XPATH + "/response/parameters/object";
+            xpathDefinitions.XpathToEndpoint = XPATH + "/request/endpoint";
+            xpathDefinitions.XpathToMethod = XPATH + "/request/method";
+
+            return xpathDefinitions;
         }
     }
 }

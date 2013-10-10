@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SoaHubCore.Interfaces;
-using SoaHubCore.BaseClasses;
-using FootballPool.eu.dataaccess.footballpool;
-using System.Xml.Serialization;
 using System.IO;
+using System.Xml.Serialization;
+using FootballPool.eu.dataaccess.footballpool;
+using SoaHubCore.BaseClasses;
+using SoaHubCore.Interfaces;
 
 namespace FootballPool
 {
-    public class Communicator : ICommunicator<FootballPoolMessage>
+    public class Communicator : ICommunicator<FootballPoolMessage>, IDisposable
     {
         private Info _proxy = new Info();
         private TransactionBase<FootballPoolMessage> _transaction;
@@ -54,6 +50,36 @@ namespace FootballPool
         private string[] GetCities()
         {
             return _proxy.Cities();
+        }
+
+        #endregion
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        // NOTE: Leave out the finalizer altogether if this class doesn't 
+        // own unmanaged resources itself, but leave the other methods
+        // exactly as they are. 
+        ~Communicator() 
+        {
+            // Finalizer calls Dispose(false)
+            Dispose(false);
+        }
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing) 
+            {
+                // free managed resources
+                if (_proxy != null)
+                {
+                    _proxy.Dispose();
+                }
+            }
         }
 
         #endregion

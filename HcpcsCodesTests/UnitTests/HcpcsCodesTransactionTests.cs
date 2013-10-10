@@ -1,5 +1,5 @@
-﻿using HcpcsCodes;
-using HcpcsCodesTests.MockObjects;
+﻿using System.Xml.Linq;
+using HcpcsCodes;
 using HcpcsCodesTests.SetUpData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SoaHubCore.BaseClasses;
@@ -9,12 +9,15 @@ namespace UnitTests.HcpcsCodesTests
     [TestClass]
     public class HcpcsCodesTransactionTests
     {
+        const string XPATH = "/hcpcscodesconfiguration";
+
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_RequestHasDescriptionValue()
         {
-            MockedValues mockedValues = SetupMockedTransactionValues();
-            TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            Transaction transaction = new Transaction(transactionData);
+            XDocument configurationData = ConfigurationData.GetHcpcsConfigurationData();
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(configurationData, xpathDefinitions);
+            
 
             Assert.IsTrue(transaction.ResponseObject.RequestParameters["description"].Equals("Clinical psychologist"));
         }
@@ -22,9 +25,9 @@ namespace UnitTests.HcpcsCodesTests
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_ResponseHasObjectValue()
         {
-            MockedValues mockedValues = SetupMockedTransactionValues();
-            TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            Transaction transaction = new Transaction(transactionData);
+            XDocument configurationData = ConfigurationData.GetHcpcsConfigurationData();
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(configurationData, xpathDefinitions);
 
             Assert.IsTrue(transaction.ResponseObject.ResponseParameters["object"].Equals("HCPCS"));
         }
@@ -32,9 +35,9 @@ namespace UnitTests.HcpcsCodesTests
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_HasEndpointValue()
         {
-            MockedValues mockedValues = SetupMockedTransactionValues();
-            TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            Transaction transaction = new Transaction(transactionData);
+            XDocument configurationData = ConfigurationData.GetHcpcsConfigurationData();
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(configurationData, xpathDefinitions);
 
             Assert.IsTrue(transaction.ResponseObject.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
         }
@@ -42,23 +45,22 @@ namespace UnitTests.HcpcsCodesTests
         [TestMethod]
         public void Transaction_LoadTransactionConfiguration_HasMethodValue()
         {
-            MockedValues mockedValues = SetupMockedTransactionValues();
-            TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            Transaction transaction = new Transaction(transactionData);
+            XDocument configurationData = ConfigurationData.GetHcpcsConfigurationData();
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(configurationData, xpathDefinitions);
 
             Assert.IsTrue(transaction.ResponseObject.DestinationMethod.Equals("GetDetailsByDescription"));
         }
 
-        private static MockedValues SetupMockedTransactionValues()
+        private static XPathDefinitions SetUpXPath()
         {
-            MockedValues mockedValues = new MockedValues();
-            mockedValues.RequestKey = "description";
-            mockedValues.RequestValue = "Clinical psychologist";
-            mockedValues.ResponseKey = "object";
-            mockedValues.ResponseValue = "HCPCS";
-            mockedValues.Endpoint = "http://www.restfulwebservices.net/wcf/HCPCSService.svc";
-            mockedValues.Method = "GetDetailsByDescription";
-            return mockedValues;
+            XPathDefinitions xpathDefinitions = new XPathDefinitions();
+            xpathDefinitions.XpathToRequestParameters = XPATH + "/request/parameters/description";
+            xpathDefinitions.XpathToResponseParameters = XPATH + "/response/parameters/object";
+            xpathDefinitions.XpathToEndpoint = XPATH + "/request/endpoint";
+            xpathDefinitions.XpathToMethod = XPATH + "/request/method";
+
+            return xpathDefinitions;
         }
     }
 }

@@ -19,18 +19,26 @@ namespace HcpcsCodesTests.IntegrationTests
             XDocument doc = SetUpData.ConfigurationData.GetHcpcsConfigurationData();
             SetUpData.ConfigurationData.SaveDataToAnXmlFile(PATH);
 
-            TransactionData transactionData = new TransactionData(PATH);
-            transactionData.XpathToRequestParameters = XPATH + "/request/parameters/description";
-            transactionData.XpathToResponseParameters = XPATH + "/response/parameters/object";
-            transactionData.XpathToEndpoint = XPATH + "/request/endpoint";
-            transactionData.XpathToMethod = XPATH + "/request/method";
-            Transaction request = new Transaction(transactionData);
+            XDocument xmlData = XDocument.Load(PATH);
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(xmlData, xpathDefinitions);
 
-            ICommunicator<HcpcsCodesMessage> communicator = new Communicator(request);
+            ICommunicator<HcpcsCodesMessage> communicator = new Communicator(transaction);
 
             TransactionBase<HcpcsCodesMessage> response = communicator.Send();
 
             Assert.IsTrue(response.ResponseObject.ResponseParameters["object"].Contains("HCPCS"));
+        }
+
+        private static XPathDefinitions SetUpXPath()
+        {
+            XPathDefinitions xpathDefinitions = new XPathDefinitions();
+            xpathDefinitions.XpathToRequestParameters = XPATH + "/request/parameters/description";
+            xpathDefinitions.XpathToResponseParameters = XPATH + "/response/parameters/object";
+            xpathDefinitions.XpathToEndpoint = XPATH + "/request/endpoint";
+            xpathDefinitions.XpathToMethod = XPATH + "/request/method";
+
+            return xpathDefinitions;
         }
     }
 }

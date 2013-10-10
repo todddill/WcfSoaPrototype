@@ -1,8 +1,9 @@
 ﻿using SoaHubCore.BaseClasses;
 using SoaHubCore.Interfaces;
 using HcpcsCodes;
-using HcpcsCodesTests.MockObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using HcpcsCodesTests.SetUpData;
+using System.Xml.Linq;
 
 namespace UnitTests.HcpcsCodesTests
 {
@@ -10,13 +11,14 @@ namespace UnitTests.HcpcsCodesTests
     public class HcpcsCodesCommunicatorTests
     {
         const string PATH = "configurationTests.txt";
+        const string XPATH = "/hcpcscodesconfiguration";
 
         [TestMethod]
         public void Communicator_Send_TransactionHasRequestParameter_Description()
         {
-            MockedValues mockedValues = SetupMockedTransactionValues();
-            TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(transactionData);
+            XDocument configurationData = ConfigurationData.GetHcpcsConfigurationData();
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(configurationData, xpathDefinitions);
             ICommunicator<HcpcsCodesMessage> communicator = new Communicator(transaction);
 
             communicator.Send();
@@ -27,10 +29,9 @@ namespace UnitTests.HcpcsCodesTests
         [TestMethod]
         public void Communicator_Send_TransactionHasResponseParameter_Object()
         {
-            MockedValues mockedValues = SetupMockedTransactionValues();
-            TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(transactionData);
-
+            XDocument configurationData = ConfigurationData.GetHcpcsConfigurationData();
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(configurationData, xpathDefinitions);
             ICommunicator<HcpcsCodesMessage> communicator = new Communicator(transaction);
 
             communicator.Send();
@@ -41,9 +42,9 @@ namespace UnitTests.HcpcsCodesTests
         [TestMethod]
         public void Communicator_Send_TransactionHasEndpoint_Name()
         {
-            MockedValues mockedValues = SetupMockedTransactionValues();
-            TransactionDataBase transactionData = new MockTransactionData(mockedValues);
-            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(transactionData);
+            XDocument configurationData = ConfigurationData.GetHcpcsConfigurationData();
+            XPathDefinitions xpathDefinitions = SetUpXPath();
+            TransactionBase<HcpcsCodesMessage> transaction = new Transaction(configurationData, xpathDefinitions);
             ICommunicator<HcpcsCodesMessage> communicator = new Communicator(transaction);
 
             communicator.Send();
@@ -51,16 +52,15 @@ namespace UnitTests.HcpcsCodesTests
             Assert.IsTrue(transaction.ResponseObject.DestinationEndpoint.Equals("http://www.restfulwebservices.net/wcf/HCPCSService.svc"));
         }
 
-        private static MockedValues SetupMockedTransactionValues()
+        private static XPathDefinitions SetUpXPath()
         {
-            MockedValues mockedValues = new MockedValues();
-            mockedValues.RequestKey = "description";
-            mockedValues.RequestValue = "Clinical psychologist";
-            mockedValues.ResponseKey = "object";
-            mockedValues.ResponseValue = "HCPCS";
-            mockedValues.Endpoint = "http://www.restfulwebservices.net/wcf/HCPCSService.svc";
-            mockedValues.Method = "GetDetailsByDescription";
-            return mockedValues;
+            XPathDefinitions xpathDefinitions = new XPathDefinitions();
+            xpathDefinitions.XpathToRequestParameters = XPATH + "/request/parameters/description";
+            xpathDefinitions.XpathToResponseParameters = XPATH + "/response/parameters/object";
+            xpathDefinitions.XpathToEndpoint = XPATH + "/request/endpoint";
+            xpathDefinitions.XpathToMethod = XPATH + "/request/method";
+
+            return xpathDefinitions;
         }
     }
 }
